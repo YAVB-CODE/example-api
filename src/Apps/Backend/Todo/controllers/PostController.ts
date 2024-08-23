@@ -13,7 +13,7 @@ export class PostController implements IController {
         try {
             const { name, id, status } = req.body
             await new CreateUseCase(new MemoryTodoRepository()).run(id, name, status)
-            res.status(httpStatus.CREATED).send()
+            res.status(httpStatus.OK).send()
         } catch (error) {
             let message: string = 'Unexpected error'
             let code: number = httpStatus.INTERNAL_SERVER_ERROR
