@@ -8,8 +8,8 @@ export class StringValueObject extends BaseValueObject<string> {
     }
 
     shouldBeString(): void | InvalidArgumentException {
-        if (typeof this.getValue() === 'string') return
-
-        throw new InvalidArgumentException('The param should be a string')
+        if (typeof this.getValue() !== 'string') {
+            throw new InvalidArgumentException('The param should be a string')
+        }
     }
 }

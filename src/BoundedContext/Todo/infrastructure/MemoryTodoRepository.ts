@@ -18,9 +18,17 @@ export class MemoryTodoRepository implements ITodoRepository {
             resolve(void 0)
         })
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     searchByCriteria(param: Criteria<Todo>): Promise<Todo[]> {
-        return Promise.resolve(MemoryTodoRepository.todos)
+        let result = MemoryTodoRepository.todos
+        for (const [field, filter] of Object.entries(param.filters)) {
+            if (field === 'id') {
+                result = result.filter(todo => {
+                    return todo.id === filter.value
+                })
+            }
+        }
+
+        return Promise.resolve(result)
     }
 
     save(param: Todo): Promise<void> {

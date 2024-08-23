@@ -1,9 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import request from 'supertest'
-
 import { ServerBackend } from '../../../../../src/Apps/Backend/ServerBackend'
-import { ListUseCase } from '../../../../../src/BoundedContext/Todo/application/ListUseCase'
+import { ListUseCase } from '../../../../../src/BoundedContext/Todo/application/useCases/ListUseCase'
 import { MemoryTodoRepository } from '../../../../../src/BoundedContext/Todo/infrastructure/MemoryTodoRepository'
+
+import request from 'supertest'
+import httpStatus from 'http-status'
 
 describe('POST /todo', () => {
     let server: ServerBackend
@@ -28,7 +29,7 @@ describe('POST /todo', () => {
 
         const todos = await new ListUseCase(new MemoryTodoRepository()).run()
 
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(httpStatus.CREATED)
         expect(todos).toEqual([todo])
     })
 
@@ -39,7 +40,7 @@ describe('POST /todo', () => {
             status: 'false',
         }
         const response = await request(server?.app).post('/api/v1/todo').send(todo)
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(httpStatus.BAD_REQUEST)
     })
 
     it('should failed created todo: The param id should be a string', async () => {
@@ -49,7 +50,7 @@ describe('POST /todo', () => {
             status: 'false',
         }
         const response = await request(server?.app).post('/api/v1/todo').send(todo)
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(httpStatus.BAD_REQUEST)
     })
 
     it('should failed created todo: The param name should be a string', async () => {
@@ -59,12 +60,12 @@ describe('POST /todo', () => {
             status: false,
         }
         const response = await request(server?.app).post('/api/v1/todo').send(todo)
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(httpStatus.BAD_REQUEST)
     })
 
     it('should failed created todo: Empty todo', async () => {
         const todo = {}
         const response = await request(server?.app).post('/api/v1/todo').send(todo)
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(httpStatus.BAD_REQUEST)
     })
 })

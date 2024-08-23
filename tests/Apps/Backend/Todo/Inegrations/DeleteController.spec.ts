@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import httpStatus from 'http-status'
 
 import { ServerBackend } from '../../../../../src/Apps/Backend/ServerBackend'
-import { CreateUseCase } from '../../../../../src/BoundedContext/Todo/application/CreateUseCase'
+import { CreateUseCase } from '../../../../../src/BoundedContext/Todo/application/useCases/CreateUseCase'
 import { MemoryTodoRepository } from '../../../../../src/BoundedContext/Todo/infrastructure/MemoryTodoRepository'
 
 describe('DELETE /todo', () => {
@@ -20,7 +21,7 @@ describe('DELETE /todo', () => {
 
     it('should status code 404 Not found todo', async () => {
         const response = await request(server?.app).delete('/api/v1/todo/1')
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(httpStatus.NOT_FOUND)
     })
 
     it('should status code 200, success delete todo', async () => {
@@ -34,6 +35,6 @@ describe('DELETE /todo', () => {
 
         const response = await request(server?.app).delete('/api/v1/todo/' + todo.id)
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(httpStatus.OK)
     })
 })

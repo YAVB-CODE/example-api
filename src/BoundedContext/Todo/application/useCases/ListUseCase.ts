@@ -1,7 +1,7 @@
-import { Criteria } from '../../Common/infrastructure/Criteria'
-import { Todo } from '../domain/entities/Todo'
-import { ITodoRepository } from '../domain/infrastructure/ITodoRepository'
-import { ListTodoException } from './exceptions/ListTodoException'
+import { Criteria } from '../../../Common/infrastructure/Criteria'
+import { Todo } from '../../domain/entities/Todo'
+import { ITodoRepository } from '../../domain/infrastructure/ITodoRepository'
+import { ListTodoException } from '../exceptions/ListTodoException'
 
 export class ListUseCase {
     constructor(private todoRepository: ITodoRepository) {}

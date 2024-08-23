@@ -1,8 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import httpStatus from 'http-status'
 
 import { ServerBackend } from '../../../../../src/Apps/Backend/ServerBackend'
-import { CreateUseCase } from '../../../../../src/BoundedContext/Todo/application/CreateUseCase'
+import { CreateUseCase } from '../../../../../src/BoundedContext/Todo/application/useCases/CreateUseCase'
 import { MemoryTodoRepository } from '../../../../../src/BoundedContext/Todo/infrastructure/MemoryTodoRepository'
 
 describe('GET /todo', () => {
@@ -20,7 +21,7 @@ describe('GET /todo', () => {
 
     it('should show an empty list', async () => {
         const response = await request(server?.app).get('/api/v1/todo')
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(httpStatus.OK)
         expect(response.body).toEqual([])
     })
 
@@ -34,7 +35,7 @@ describe('GET /todo', () => {
         await new CreateUseCase(new MemoryTodoRepository()).run(todo.id, todo.name, todo.status)
 
         const response = await request(server?.app).get('/api/v1/todo')
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(httpStatus.OK)
         expect(response.body).toHaveLength(1)
         expect(response.body).toEqual([todo])
     })

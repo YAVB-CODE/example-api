@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import httpStatus from 'http-status'
 
 import { ServerBackend } from '../../../../../src/Apps/Backend/ServerBackend'
 
@@ -22,13 +23,18 @@ describe('Backend /todo', () => {
             name: 'Test',
             status: false,
         }
-        const responsePost = await request(server?.app).post('/api/v1/todo').send(todo)
-        expect(responsePost.status).toBe(201)
+        let response = await request(server?.app).post('/api/v1/todo').send(todo)
+        expect(response.status).toBe(httpStatus.CREATED)
 
-        const responseGet = await request(server?.app).get('/api/v1/todo')
-        expect(responseGet.status).toBe(200)
+        response = await request(server?.app).get('/api/v1/todo')
+        expect(response.status).toBe(httpStatus.OK)
+        expect(response.body).toEqual([todo])
 
-        const responseDelete = await request(server?.app).delete('/api/v1/todo/' + todo.id)
-        expect(responseDelete.status).toBe(200)
+        response = await request(server?.app).delete('/api/v1/todo/' + todo.id)
+        expect(response.status).toBe(httpStatus.OK)
+
+        response = await request(server?.app).get('/api/v1/todo')
+        expect(response.status).toBe(httpStatus.OK)
+        expect(response.body).toEqual([])
     })
 })
