@@ -4,10 +4,12 @@
     "main": "index.js",
     "scripts": {
         "lint": "eslint",
+        "prepare": "husky install",
         "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
         "backend:dev": "ts-node src/Apps/Backend/index.ts",
         "test:backend:dev": "vitest",
-        "prepare": "husky install"
+        "test:integration": "vitest run ./tests/Apps/Backend/Todo/Integrations",
+        "test:e2e": "vitest run ./tests/Apps/Backend/Todo/EndToEnd"
     },
     "keywords": [],
     "author": "",
